@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
-from unfold.admin import ModelAdmin
+from config.admin_base import ModelAdmin
 from unfold.decorators import display
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from unfold.admin import ModelAdmin
+from config.admin_base import ModelAdmin
 
 from .models import Classroom, Enrollment, School
 

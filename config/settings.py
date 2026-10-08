@@ -1,6 +1,7 @@
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
+from django.templatetags.static import static
 from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,6 +57,7 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -79,6 +81,7 @@ UNFOLD = {
     "SITE_SUBHEADER": "Administration",
     "SITE_SYMBOL": "school",
     "SITE_URL": "/",
+    "SCRIPTS": [lambda request: static("js/admin-modal.js")],
     "DASHBOARD_CALLBACK": "config.dashboard.dashboard_callback",
     "COLORS": {"primary": {
         "50": "oklch(98.4% .014 180.72)", "100": "oklch(95.3% .051 180.801)",
@@ -115,6 +118,9 @@ UNFOLD = {
             {"title": "Accès", "items": [
                 _nav("Utilisateurs", "group", "accounts_user"),
                 _nav("Groupes", "admin_panel_settings", "auth_group"),
+            ]},
+            {"title": "Session", "items": [
+                {"title": "Se déconnecter", "icon": "logout", "link": "#logout"},
             ]},
         ],
     },

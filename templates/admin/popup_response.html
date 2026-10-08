@@ -1,0 +1,19 @@
+{% load i18n static %}<!DOCTYPE html>
+<html>
+  <head><title>{% translate 'Popup closing…' %}</title></head>
+  <body>
+    <script>
+      // Dans la modale (iframe) : prévenir la page parente. Sinon : comportement Django normal (fenêtre "+").
+      if (!window.opener && window.parent !== window) {
+        window.parent.postMessage({type: "admin-modal-saved"}, window.location.origin);
+        window.stop();
+      }
+    </script>
+    <script id="django-admin-popup-response-constants"
+            src="{% static 'admin/js/popup_response.js' %}"
+            {% if popup_response_data %}
+              data-popup-response="{{ popup_response_data }}"
+            {% endif %}>
+    </script>
+  </body>
+</html>

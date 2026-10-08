@@ -53,3 +53,34 @@ class FlowTest(APITestCase):
                     "/admin/quizzes/quiz/", "/admin/quizzes/question/1/change/", "/admin/quizzes/attempt/",
                     "/admin/payments/fee/", "/admin/payments/fee/add/", "/admin/payments/payment/", "/admin/auth/group/"]:
             self.assertEqual(self.client.get(url).status_code, 200, url)
+
+    def test_admin_modal(self):
+        from django.contrib.staticfiles import finders
+        self.assertIsNotNone(finders.find("js/admin-modal.js"))
+        self.client.login(username="admin", password="admin12345")
+        r = self.client.get("/admin/schools/school/add/?_popup=1")
+        self.assertEqual(r.status_code, 200)
+        self.assertNotIn("Retour au site", r.content.decode())  # pas de menu latéral dans la modale
+        self.assertIn("admin-modal.js", self.client.get("/admin/schools/school/").content.decode())
+        r = self.client.post("/admin/schools/school/add/?_popup=1", {"name": "Nouvelle école", "address": "", "_popup": "1"})
+        self.assertEqual(r.status_code, 200)
+        self.assertIn("admin-modal-saved", r.content.decode())
+        from schools.models import School
+        self.assertTrue(School.objects.filter(name="Nouvelle école").exists())
+
+    def test_admin_actions(self):
+        from schools.models import School
+        self.client.login(username="admin", password="admin12345")
+        s = School.objects.create(name="À supprimer")
+        r = self.client.get(f"/admin/schools/school/{s.id}/change/?_view=1&_popup=1")
+        html = r.content.decode()
+        self.assertEqual(r.status_code, 200)
+        self.assertNotIn('name="_save"', html)       # lecture seule : pas de bouton Enregistrer
+        self.assertIn("À supprimer", html)
+        r = self.client.get(f"/admin/schools/school/{s.id}/change/?_popup=1")
+        self.assertIn('name="_save"', r.content.decode())  # modification : formulaire normal
+        self.assertEqual(self.client.get(f"/admin/schools/school/{s.id}/delete/?_popup=1").status_code, 200)
+        r = self.client.post(f"/admin/schools/school/{s.id}/delete/?_popup=1", {"post": "yes", "_popup": "1"})
+        self.assertIn("admin-modal-saved", r.content.decode())
+        self.assertFalse(School.objects.filter(id=s.id).exists())
+        self.assertIn("#logout", self.client.get("/admin/").content.decode())
