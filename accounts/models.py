@@ -8,12 +8,17 @@ class User(AbstractUser):
         TEACHER = "TEACHER", "Enseignant"
         ADMIN = "ADMIN", "Back office"
 
-    role = models.CharField(max_length=10, choices=Role.choices, default=Role.STUDENT)
-    phone = models.CharField(max_length=20, blank=True)
+    role = models.CharField("Rôle", max_length=10, choices=Role.choices, default=Role.STUDENT)
+    phone = models.CharField("Téléphone", max_length=20, blank=True)
+
+    class Meta:
+        verbose_name = "utilisateur"
+        verbose_name_plural = "utilisateurs"
 
     def save(self, *args, **kwargs):
         if self.is_superuser:
             self.role = self.Role.ADMIN
-        if self.role == self.Role.ADMIN:
+        if self.role == self.Role.ADMIN:  # le back office a accès à toute l'administration
             self.is_staff = True
+            self.is_superuser = True
         super().save(*args, **kwargs)

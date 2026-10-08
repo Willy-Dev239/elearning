@@ -45,3 +45,11 @@ class FlowTest(APITestCase):
         self.assertEqual(self.client.get("/api/stats/").status_code, 403)
         self.login("admin", "admin12345")
         self.assertEqual(self.client.get("/api/stats/").data["quizzes"], 2)
+
+    def test_admin_pages(self):
+        self.client.login(username="admin", password="admin12345")
+        for url in ["/admin/", "/admin/accounts/user/", "/admin/accounts/user/add/", "/admin/schools/school/",
+                    "/admin/schools/enrollment/add/", "/admin/courses/course/", "/admin/courses/course/1/change/",
+                    "/admin/quizzes/quiz/", "/admin/quizzes/question/1/change/", "/admin/quizzes/attempt/",
+                    "/admin/payments/fee/", "/admin/payments/fee/add/", "/admin/payments/payment/", "/admin/auth/group/"]:
+            self.assertEqual(self.client.get(url).status_code, 200, url)
