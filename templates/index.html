@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>École en ligne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&display=swap" rel="stylesheet">
+{% verbatim %}
+<style>
+:root{--ink:#1b2a41;--teal:#0e7c7b;--hl:#ffd166;--bg:#f6f7f9;--pan:#fff;--ln:#dde2e8;--tx:#1b2a41;--mut:#5b6b7c;--ok:#157347;--ko:#b3261e;
+--sans:"Source Sans 3",system-ui,sans-serif;--serif:"Source Serif 4",Georgia,serif}
+@media(prefers-color-scheme:dark){:root{--ink:#0f1a2b;--bg:#121a26;--pan:#1a2434;--ln:#2c3a50;--tx:#e8edf3;--mut:#9aa9bb;--teal:#3cb5b3;--ok:#4cc38a;--ko:#ff8a80}}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 var(--sans);background:var(--bg);color:var(--tx)}
+h1,h2,h3{font-family:var(--serif);margin:0;line-height:1.2}h1{font-size:30px;margin-bottom:20px}h2{font-size:21px;margin:28px 0 10px}h3{font-size:18px}
+small,.mut{color:var(--mut);font-size:14px}p{margin:4px 0}
+:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}.shell.out{display:block}.shell.out .side{display:none}
+.side{background:var(--ink);color:#e8edf3;padding:22px 14px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
+.brand{font:700 21px var(--serif);padding:0 10px 18px}
+.ni{background:none;border:0;color:inherit;text-align:left;padding:9px 12px;border-radius:4px;font:inherit;cursor:pointer;border-left:4px solid transparent}
+.ni:hover{background:rgba(255,255,255,.07)}.ni.on{background:rgba(255,255,255,.1);border-left-color:var(--hl);font-weight:600}
+.links{margin-top:auto;display:flex;flex-direction:column;gap:2px;padding:0 12px 12px}.links a{color:#b8c4d3;font-size:14px}
+.who{display:flex;gap:10px;align-items:center;border-top:1px solid rgba(255,255,255,.14);padding:14px 8px 0}.who div{flex:1;display:flex;flex-direction:column;line-height:1.2;min-width:0}
+.who small{color:#b8c4d3}.who b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.av{width:34px;height:34px;border-radius:50%;background:var(--hl);color:var(--ink);display:grid;place-items:center;font-weight:700}
+.page{padding:32px 36px;max-width:960px;width:100%}
+button,.btn{font:600 15px var(--sans);cursor:pointer;border-radius:4px;padding:8px 16px;border:1px solid var(--teal);background:var(--teal);color:#fff}
+button.sec{background:transparent;color:var(--teal)}button.ghost{background:none;border:0;color:#b8c4d3;padding:4px 6px;font-weight:400}
+.back{background:none;border:0;color:var(--teal);padding:0 0 12px;font-weight:600}
+input,select,textarea{width:100%;font:inherit;padding:9px 10px;margin:4px 0 10px;border:1px solid var(--ln);border-radius:4px;background:var(--bg);color:var(--tx)}
+input[type=radio]{width:auto;margin:0 8px 0 0}label{font-size:14px;color:var(--mut)}
+.panel{background:var(--pan);border:1px solid var(--ln);border-radius:8px;padding:16px 18px;margin:12px 0}
+details.panel summary{cursor:pointer;font-weight:600}details.panel[open] summary{margin-bottom:12px}
+.list{border-top:1px solid var(--ln)}
+.row{display:flex;gap:16px;justify-content:space-between;align-items:center;width:100%;text-align:left;background:var(--pan);color:var(--tx);border:0;border-bottom:1px solid var(--ln);border-left:5px solid var(--c,var(--teal));border-radius:0;padding:14px 18px;font-weight:400}
+button.row:hover{background:var(--bg)}.row .t{display:block}.row small{text-align:right}
+.empty{padding:22px;border:1px dashed var(--ln);border-radius:8px;color:var(--mut)}
+table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--ln);text-align:left;vertical-align:middle}th{font-weight:600;color:var(--mut);font-size:14px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--ln);border-radius:3px;min-width:90px}.bar i{display:block;height:100%;background:var(--teal);border-radius:3px}
+.ok{color:var(--ok)}.ko{color:var(--ko)}video{width:100%;max-height:440px;margin-top:10px;background:#000;border-radius:6px}
+fieldset{border:0;border-top:1px solid var(--ln);padding:14px 0;margin:0}legend{font:600 17px var(--serif);padding:0 8px 0 0}
+.opt{display:block;padding:4px 0;color:var(--tx);font-size:16px}
+.cash{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}.cash b{font:700 44px var(--serif)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}dl{margin:0}dl div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--ln)}dt{color:var(--mut)}dd{margin:0;font-weight:600}
+ol.steps{padding-left:22px;margin:8px 0 0}ol.steps li{padding:5px 0}ol.steps li.done{color:var(--mut);text-decoration:line-through}
+.auth{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}.hero{background:var(--ink);color:#fff;padding:64px 48px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.hero h1{font-size:38px;margin:0}.hero p{color:#c3cedc;max-width:42ch}.forms{padding:64px 48px;max-width:460px;align-self:center;width:100%}
+#toast{position:fixed;bottom:20px;right:20px;max-width:360px;background:var(--ink);color:#fff;border-left:5px solid var(--hl);padding:12px 16px;border-radius:4px;display:none}
+#toast.show{display:block}#toast.err{border-left-color:#ff6b61}
+@media(max-width:760px){.shell{display:block}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:10px}.brand{padding:0 8px;flex:1 0 100%}
+.links{display:none}.who{border:0;padding:0;margin-left:auto}.page{padding:20px 16px}.cols,.auth{grid-template-columns:1fr}.hero,.forms{padding:32px 20px}}
+@media(prefers-reduced-motion:no-preference){button{transition:background .15s}}
+</style>
+</head><body>
+<div class="shell out" id="shell"><aside class="side" id="side"></aside><main class="page" id="app"></main></div><div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+let T=JSON.parse(localStorage.getItem('tok')||'null'),ME=null;
+const ROLE={STUDENT:'Étudiant',TEACHER:'Enseignant',ADMIN:'Back office'},HUES=['#0e7c7b','#3d5a99','#8e4a6e','#6f7d1f','#b07a12'],col=i=>HUES[i%HUES.length];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=n=>Number(n).toLocaleString('fr-FR');
+function toast(m,err){const t=$('#toast');t.textContent=m;t.className=err?'err show':'show';setTimeout(()=>t.className='',4500)}
+async function safe(f){try{await f()}catch(e){toast(e.message,1)}}
+async function api(p,o={}){
+  const h={...(o.headers||{})};
+  if(T)h.Authorization='Bearer '+T.access;
+  if(o.json){h['Content-Type']='application/json';o.body=JSON.stringify(o.json)}
+  const r=await fetch('/api/'+p,{...o,headers:h});
+  if(r.status===401&&T&&!o._retry){
+    const rr=await fetch('/api/auth/refresh/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({refresh:T.refresh})});
+    if(rr.ok){T.access=(await rr.json()).access;localStorage.setItem('tok',JSON.stringify(T));return api(p,{...o,_retry:1})}
+    logout();throw new Error('Session expirée, reconnectez-vous.')}
+  const d=r.status===204?null:await r.json().catch(()=>null);
+  if(!r.ok)throw new Error(d?Object.entries(d).map(([k,v])=>(k==='detail'?'':k+' : ')+(Array.isArray(v)?v.join(' '):typeof v==='object'?JSON.stringify(v):v)).join(' | '):r.statusText);
+  return d}
+function logout(){T=null;ME=null;localStorage.removeItem('tok');authView()}
+
+function authView(){
+  $('#shell').className='shell out';
+  app.style.maxWidth='none';app.style.padding='0';
+  app.innerHTML=`<div class="auth"><section class="hero"><h1>Apprendre, enseigner, gérer : tout au même endroit.</h1>
+  <p>Cours en vidéo ou en document, quiz corrigés automatiquement, frais de scolarité payables en ligne.</p></section>
+  <section class="forms"><h2 style="margin-top:0">Connexion</h2>
+  <label for="u">Nom d'utilisateur</label><input id="u" autocomplete="username"><label for="p">Mot de passe</label><input id="p" type="password" autocomplete="current-password">
+  <button id="li">Se connecter</button>
+  <details class="panel" style="margin-top:28px"><summary>Première visite ? Créer un compte étudiant</summary>
+  <label>Nom d'utilisateur</label><input id="ru"><label>Prénom</label><input id="rf"><label>Nom</label><input id="rl"><label>Mot de passe (6 caractères minimum)</label><input id="rp" type="password">
+  <button id="rg" class="sec">Créer mon compte</button></details></section></div>`;
+  $('#p').onkeydown=e=>{if(e.key==='Enter')$('#li').click()};
+  $('#li').onclick=()=>safe(async()=>{T=null;T=await api('auth/login/',{method:'POST',json:{username:$('#u').value,password:$('#p').value}});localStorage.setItem('tok',JSON.stringify(T));await start()});
+  $('#rg').onclick=()=>safe(async()=>{await api('auth/register/',{method:'POST',json:{username:$('#ru').value,first_name:$('#rf').value,last_name:$('#rl').value,password:$('#rp').value}});toast('Compte créé. Connectez-vous avec vos identifiants.')})}
+
+const TABS={STUDENT:[['courses','Mes cours'],['fees','Frais de scolarité'],['grades','Mes notes']],TEACHER:[['courses','Mes cours'],['grades','Résultats']],ADMIN:[['stats','Tableau de bord'],['courses','Cours'],['grades','Résultats']]};
+const VIEWS={courses:vCourses,fees:vFees,grades:vGrades,stats:vStats};
+async function start(){ME=await api('auth/me/');show(TABS[ME.role][0][0])}
+function show(v){
+  $('#shell').className='shell';app.style.maxWidth='';app.style.padding='';
+  const name=ME.first_name||ME.username;
+  $('#side').innerHTML=`<div class="brand">École en ligne</div>`+TABS[ME.role].map(([k,l])=>`<button class="ni ${k===v?'on':''}" onclick="show('${k}')">${l}</button>`).join('')+
+  `<div class="links">${ME.role==='ADMIN'?'<a href="/admin/" target="_blank">Administration</a>':''}<a href="/api/docs/" target="_blank">Documentation de l'API</a></div>
+  <div class="who"><span class="av">${esc(name[0].toUpperCase())}</span><div><b>${esc(name)}</b><small>${ROLE[ME.role]}</small></div><button class="ghost" onclick="logout()">Sortir</button></div>`;
+  window.scrollTo(0,0);safe(VIEWS[v])}
+
+async function vCourses(){
+  const cs=await api('courses/'),staff=ME.role!=='STUDENT';
+  let h=`<h1>${staff?'Cours':'Mes cours'}</h1>`;
+  if(staff){const cl=await api('classrooms/');
+    h+=cl.length?`<details class="panel"><summary>Nouveau cours</summary><label>Titre</label><input id="ct"><label>Description</label><input id="cd"><label>Classe</label>
+    <select id="cc">${cl.map(c=>`<option value="${c.id}">${esc(c.school_name)}, ${esc(c.name)}</option>`).join('')}</select><button id="cb">Créer le cours</button></details>`
+    :'<p class="empty">Aucune classe n\'existe encore. Le back office doit en créer une avant de pouvoir ajouter des cours.</p>'}
+  h+=cs.length?'<div class="list">'+cs.map(c=>`<button class="row" style="--c:${col(c.id)}" data-id="${c.id}"><span class="t"><h3>${esc(c.title)}</h3><span class="mut">${esc(c.description)}</span></span><small>${esc(c.classroom_name)}<br>${esc(c.teacher_name)}</small></button>`).join('')+'</div>'
+    :`<p class="empty">${staff?'Vous n\'avez pas encore de cours. Créez le premier avec le formulaire ci-dessus.':'Aucun cours pour le moment. Les cours de votre classe apparaîtront ici dès votre inscription.'}</p>`;
+  app.innerHTML=h;
+  document.querySelectorAll('[data-id]').forEach(e=>e.onclick=()=>safe(()=>vCourse(e.dataset.id)));
+  if($('#cb'))$('#cb').onclick=()=>safe(async()=>{await api('courses/',{method:'POST',json:{title:$('#ct').value,description:$('#cd').value,classroom:+$('#cc').value}});toast('Cours créé');vCourses()})}
+
+async function vCourse(id){
+  const [c,ls,qs]=await Promise.all([api(`courses/${id}/`),api(`lessons/?course=${id}`),api(`quizzes/?course=${id}`)]);
+  const tk='?token='+T.access,staff=ME.role!=='STUDENT';
+  let h=`<button class="back" onclick="show('courses')">← Tous les cours</button><h1 style="margin-bottom:6px">${esc(c.title)}</h1><p class="mut">${esc(c.description)}</p><h2>Leçons</h2>`;
+  h+=ls.length?'<div class="list">'+ls.map(l=>`<div class="row" style="--c:${col(c.id)};display:block"><b>${esc(l.title)}</b> <small>${l.kind==='VIDEO'?'Vidéo':'Document'}</small>`+(l.kind==='VIDEO'?`<video controls preload="metadata" src="${l.stream_url+tk}"></video>`:`<p><a href="${l.stream_url+tk}" target="_blank">Ouvrir le document</a></p>`)+'</div>').join('')+'</div>'
+    :`<p class="empty">${staff?'Aucune leçon. Ajoutez une vidéo ou un document ci-dessous.':'Aucune leçon publiée pour ce cours.'}</p>`;
+  h+='<h2>Quiz</h2>'+(qs.length?'<div class="list">'+qs.map(q=>`<div class="row" style="--c:${col(c.id)}"><span><b>${esc(q.title)}</b><br><small>${q.questions.length} questions, réussite à partir de ${q.pass_mark} %</small></span><button data-q="${q.id}">${staff?'Voir les réponses':'Passer le quiz'}</button></div>`).join('')+'</div>'
+    :`<p class="empty">${staff?'Aucun quiz. Créez-en un ci-dessous.':'Aucun quiz pour ce cours.'}</p>`);
+  if(staff)h+=`<details class="panel"><summary>Ajouter une leçon</summary><label>Titre</label><input id="lt"><label>Type</label><select id="lk"><option value="VIDEO">Vidéo</option><option value="DOCUMENT">Document</option></select><label>Fichier</label><input id="lf" type="file"><button id="lb">Envoyer la leçon</button></details>
+  <details class="panel"><summary>Créer un quiz</summary><label>Titre du quiz</label><input id="qt"><label>Questions : une par ligne, bonne réponse suivie de *</label>
+  <textarea id="qx" rows="5" placeholder="Capitale du Burundi ? | Gitega* | Kigali | Nairobi"></textarea><button id="qb">Créer le quiz</button></details>`;
+  app.innerHTML=h;
+  document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>safe(()=>vQuiz(b.dataset.q,id)));
+  if(staff){
+    $('#lb').onclick=()=>safe(async()=>{const f=new FormData();f.append('course',id);f.append('title',$('#lt').value);f.append('kind',$('#lk').value);f.append('file',$('#lf').files[0]);await api('lessons/',{method:'POST',body:f});toast('Leçon ajoutée');vCourse(id)});
+    $('#qb').onclick=()=>safe(async()=>{const qsn=$('#qx').value.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const p=l.split('|').map(s=>s.trim());return{text:p[0],choices:p.slice(1).map(x=>({text:x.replace(/\*$/,'').trim(),is_correct:x.endsWith('*')}))}});
+      await api('quizzes/',{method:'POST',json:{course:+id,title:$('#qt').value,questions:qsn}});toast('Quiz créé');vCourse(id)})}}
+
+async function vQuiz(id,cid){
+  const q=await api(`quizzes/${id}/`),st=ME.role==='STUDENT';
+  app.innerHTML=`<button class="back" onclick="vCourse(${cid})">← Retour au cours</button><h1>${esc(q.title)}</h1>`+q.questions.map((x,i)=>`<fieldset><legend>${i+1}. ${esc(x.text)}</legend>`+x.choices.map(c=>st?`<label class="opt"><input type="radio" name="q${x.id}" value="${c.id}">${esc(c.text)}</label>`:`<div class="opt ${c.is_correct?'ok':''}">${c.is_correct?'Bonne réponse : ':''}${esc(c.text)}</div>`).join('')+'</fieldset>').join('')+(st?'<button id="sb" style="margin-top:12px">Valider mes réponses</button><div id="res"></div>':'');
+  if(st)$('#sb').onclick=()=>safe(async()=>{const a={};q.questions.forEach(x=>{const r=document.querySelector(`input[name=q${x.id}]:checked`);if(r)a[x.id]=+r.value});
+    const r=await api(`quizzes/${id}/attempt/`,{method:'POST',json:{answers:a}});
+    $('#res').innerHTML=`<div class="panel"><h2 style="margin-top:0" class="${r.passed?'ok':'ko'}">${r.score} sur ${r.total}, soit ${r.percent} %</h2><p>${r.passed?'Réussi. Bravo !':'Seuil non atteint. Relisez le cours puis réessayez.'}</p></div>`})}
+
+async function vFees(){
+  const [fs,ps]=await Promise.all([api('fees/'),api('payments/')]);
+  let h='<h1>Frais de scolarité</h1>';
+  h+=fs.length?'<div class="panel"><table><tr><th>Frais</th><th>Avancement</th><th class="n">Reste à payer</th><th>Échéance</th><th></th></tr>'+
+  fs.map(f=>{const pct=Math.min(100,Math.round(100*f.paid/f.amount));return`<tr><td><b>${esc(f.title)}</b><br><small>Total ${num(f.amount)}</small></td><td><div class="bar"><i style="width:${pct}%"></i></div><small>${num(f.paid)} payés</small></td><td class="n">${num(f.remaining)}</td><td>${new Date(f.due_date).toLocaleDateString('fr-FR')}</td><td>${+f.remaining>0?`<button data-f="${f.id}" data-r="${f.remaining}">Payer</button>`:'<span class="ok">Soldé</span>'}</td></tr>`}).join('')+'</table></div>'
+  :'<p class="empty">Aucun frais à régler. Les frais de votre classe apparaîtront ici dès qu\'ils seront définis.</p>';
+  h+='<div id="pf"></div><h2>Historique des paiements</h2>'+(ps.length?'<div class="panel"><table><tr><th>Référence</th><th>Frais</th><th class="n">Montant</th><th>Statut</th><th>Date</th><th></th></tr>'+
+  ps.map(p=>`<tr><td>${p.reference}</td><td>${esc(p.fee_title)}</td><td class="n">${num(p.amount)}</td><td class="${p.status==='PAID'?'ok':'ko'}">${p.status==='PAID'?'Payé':'Échoué'}</td><td>${new Date(p.created).toLocaleDateString('fr-FR')}</td><td>${p.status==='PAID'?`<button class="sec" data-rc="${p.id}">Reçu</button>`:''}</td></tr>`).join('')+'</table></div>':'<p class="empty">Aucun paiement effectué pour le moment.</p>');
+  app.innerHTML=h;
+  document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{$('#pf').innerHTML=`<div class="panel"><h3>Payer ces frais</h3><label>Moyen de paiement</label><select id="pm"><option value="MOBILE_MONEY">Mobile Money</option><option value="CARD">Carte bancaire</option><option value="CASH">Espèces ou banque</option></select>
+    <label>Numéro de téléphone (obligatoire pour Mobile Money)</label><input id="pp" inputmode="tel"><label>Montant (par défaut : tout le reste)</label><input id="pa" type="number" value="${b.dataset.r}" step="any"><button id="go">Confirmer le paiement</button></div>`;
+    $('#pf').scrollIntoView({behavior:'smooth'});
+    $('#go').onclick=()=>safe(async()=>{const r=await api('payments/',{method:'POST',json:{fee:+b.dataset.f,method:$('#pm').value,phone:$('#pp').value,amount:$('#pa').value}});
+      toast(r.status==='PAID'?'Paiement enregistré. Référence '+r.reference:'Paiement refusé : indiquez un numéro de téléphone.',r.status!=='PAID');vFees()})});
+  document.querySelectorAll('[data-rc]').forEach(b=>b.onclick=()=>safe(async()=>{const r=await api(`payments/${b.dataset.rc}/receipt/`);
+    $('#pf').innerHTML=`<div class="panel"><h3>Reçu ${r.reference}</h3><dl><div><dt>Étudiant</dt><dd>${esc(r.student)}</dd></div><div><dt>Frais</dt><dd>${esc(r.fee)}</dd></div><div><dt>Classe</dt><dd>${esc(r.classroom)}</dd></div><div><dt>Montant</dt><dd>${num(r.amount)}</dd></div><div><dt>Moyen</dt><dd>${esc(r.method)}</dd></div><div><dt>Date</dt><dd>${new Date(r.date).toLocaleDateString('fr-FR')}</dd></div></dl><p style="margin-top:12px"><button class="sec" onclick="window.print()">Imprimer</button></p></div>`;$('#pf').scrollIntoView({behavior:'smooth'})}))}
+
+async function vGrades(){
+  const as=await api('attempts/');
+  app.innerHTML='<h1>'+(ME.role==='STUDENT'?'Mes notes':'Résultats des quiz')+'</h1>'+(as.length?'<div class="panel"><table><tr><th>Quiz</th>'+(ME.role==='STUDENT'?'':'<th>Étudiant</th>')+'<th class="n">Note</th><th class="n">Pourcentage</th><th>Résultat</th><th>Date</th></tr>'+
+  as.map(a=>`<tr><td>${esc(a.quiz_title)}</td>${ME.role==='STUDENT'?'':`<td>${esc(a.student_name)}</td>`}<td class="n">${a.score} / ${a.total}</td><td class="n">${a.percent} %</td><td class="${a.passed?'ok':'ko'}">${a.passed?'Réussi':'Non réussi'}</td><td>${new Date(a.created).toLocaleDateString('fr-FR')}</td></tr>`).join('')+'</table></div>'
+  :'<p class="empty">Aucun résultat pour le moment. Les notes apparaîtront ici après le premier quiz passé.</p>')}
+
+async function vStats(){
+  const s=await api('stats/'),name=ME.first_name||ME.username;
+  const step=(t,u,done)=>`<li class="${done?'done':''}"><a href="${u}" target="_blank">${t}</a></li>`;
+  app.innerHTML=`<h1>Bonjour ${esc(name)}</h1>
+  <div class="cash"><b>${num(s.total_paid)}</b><span class="mut">encaissés au total, sur ${s.payments} paiement${s.payments>1?'s':''}</span></div>
+  <div class="cols"><div><h2>Effectifs</h2><dl><div><dt>Étudiants</dt><dd>${s.students}</dd></div><div><dt>Enseignants</dt><dd>${s.teachers}</dd></div><div><dt>Classes</dt><dd>${s.classrooms}</dd></div></dl></div>
+  <div><h2>Contenu</h2><dl><div><dt>Cours</dt><dd>${s.courses}</dd></div><div><dt>Leçons</dt><dd>${s.lessons}</dd></div><div><dt>Quiz</dt><dd>${s.quizzes}</dd></div></dl></div></div>
+  <h2>Mettre en route l'école</h2><div class="panel"><p class="mut">Ces étapes se font dans l'administration. Les étapes cochées sont déjà faites.</p><ol class="steps">`+
+  step('Créer l\'école et ses classes','/admin/schools/classroom/add/',s.classrooms>0)+step('Créer les comptes enseignants','/admin/accounts/user/add/',s.teachers>0)+
+  step('Inscrire les étudiants dans leur classe','/admin/schools/enrollment/add/',false)+step('Définir les frais de scolarité','/admin/payments/fee/add/',false)+
+  `</ol><p class="mut" style="margin-top:10px">Les enseignants ajoutent ensuite leurs cours, leçons et quiz depuis leur espace.</p></div>`}
+
+T?safe(start):authView();
+</script>
+{% endverbatim %}
+</body></html>
