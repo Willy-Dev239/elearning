@@ -1,4 +1,4 @@
-# API Gestion d'Écoles & E-Learning — Projet G6
+# API Gestion d'Écoles & E-Learning — Projet G4
 
 Backend **Django + Django REST Framework** pour l'application « Gestion d'Écoles & E-Learning Mobile ».
 Une seule base de code, découpée en 5 apps qui correspondent aux 5 services demandés :
