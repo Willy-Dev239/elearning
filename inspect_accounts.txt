@@ -1,0 +1,57 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
+from django.db import models
+
+
+class Utilisateurs(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    ecole = models.ForeignKey('Ecoles', models.DO_NOTHING, blank=True, null=True)
+    email = models.CharField(unique=True, max_length=150)
+    mot_de_passe = models.CharField(max_length=255)
+    role = models.TextField()  # This field type is a guess.
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    telephone = models.CharField(max_length=30, blank=True, null=True)
+    photo_url = models.CharField(max_length=255, blank=True, null=True)
+    actif = models.BooleanField()
+    derniere_connexion = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'utilisateurs'
+
+
+class Enseignants(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    utilisateur = models.OneToOneField(Utilisateurs, models.DO_NOTHING)
+    matricule = models.CharField(unique=True, max_length=40)
+    specialite = models.CharField(max_length=120, blank=True, null=True)
+    diplome = models.CharField(max_length=120, blank=True, null=True)
+    date_embauche = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'enseignants'
+
+
+class Etudiants(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    utilisateur = models.OneToOneField(Utilisateurs, models.DO_NOTHING)
+    matricule = models.CharField(unique=True, max_length=40)
+    date_naissance = models.DateField(blank=True, null=True)
+    lieu_naissance = models.CharField(max_length=120, blank=True, null=True)
+    sexe = models.TextField(blank=True, null=True)  # This field type is a guess.
+    adresse = models.CharField(max_length=255, blank=True, null=True)
+    nom_tuteur = models.CharField(max_length=150, blank=True, null=True)
+    telephone_tuteur = models.CharField(max_length=30, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'etudiants'
