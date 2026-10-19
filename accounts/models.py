@@ -11,6 +11,9 @@ class User(AbstractUser):
     email = models.EmailField("email", unique=True)
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.STUDENT)
     phone = models.CharField(max_length=20, blank=True)
+    title = models.CharField("titre", max_length=20, blank=True)  # Dr, MSc... (enseignant/admin)
+    class_name = models.CharField("classe", max_length=100, blank=True)  # étudiant
+    academic_year = models.CharField("année scolaire", max_length=20, blank=True)  # étudiant
 
     class Meta:
         ordering = ["username"]

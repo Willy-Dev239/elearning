@@ -46,6 +46,7 @@ class AdminUserSerializer(serializers.ModelSerializer):
         fields = (
             "id", "username", "email", "password", "first_name", "last_name",
             "phone", "role", "is_active", "date_joined",
+            "title", "class_name", "academic_year",
         )
         read_only_fields = ("id", "date_joined")
 
