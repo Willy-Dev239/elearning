@@ -3,8 +3,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 from core.models import TimeStampedModel
-
-
 class AcademicYear(TimeStampedModel):
     name = models.CharField(max_length=20, unique=True, help_text="ex. 2026-2027")
     start_date = models.DateField()
@@ -127,3 +125,15 @@ class Grade(TimeStampedModel):
 
     def __str__(self):
         return f"{self.title}: {self.score}/{self.max_score}"
+class SchoolClass(TimeStampedModel):
+    name = models.CharField(max_length=80, unique=True)
+    academic_year = models.ForeignKey(
+        AcademicYear, on_delete=models.SET_NULL, null=True, blank=True, related_name="classes"
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+

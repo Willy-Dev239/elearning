@@ -17,13 +17,14 @@ from core.permissions import (
     IsTeacherOrAdmin,
 )
 
-from .models import AcademicYear, Course, Enrollment, Grade, TimetableSlot
+from .models import AcademicYear, Course, Enrollment, Grade, SchoolClass, TimetableSlot
 from .serializers import (
     AcademicYearSerializer,
     BulkGradeSerializer,
     CourseSerializer,
     EnrollmentSerializer,
     GradeSerializer,
+    SchoolClassSerializer,
     TimetableSlotSerializer,
 )
 from .services import compute_transcript
@@ -31,6 +32,12 @@ from .services import compute_transcript
 WRITE_ACTIONS = ("create", "update", "partial_update", "destroy")
 
 
+class SchoolClassViewSet(viewsets.ModelViewSet):
+    queryset = SchoolClass.objects.all()
+    serializer_class = SchoolClassSerializer
+
+    def get_permissions(self):
+        return [IsAdmin()] if self.action in WRITE_ACTIONS else [IsAuthenticated()]
 class AcademicYearViewSet(viewsets.ModelViewSet):
     queryset = AcademicYear.objects.all()
     serializer_class = AcademicYearSerializer

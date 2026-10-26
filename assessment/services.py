@@ -68,9 +68,11 @@ def sync_grade(attempt):
 
 @transaction.atomic
 def submit_attempt(attempt, answers_data):
+    attempt = Attempt.objects.select_for_update().select_related("quiz").get(pk=attempt.pk)
+    if attempt.status != Attempt.Status.IN_PROGRESS:
+        raise ValidationError("Cette tentative est déjà soumise.")
     quiz = attempt.quiz
     questions = {q.id: q for q in quiz.questions.prefetch_related("choices")}
-
     provided = {}
     for item in answers_data:
         if item["question"] not in questions:

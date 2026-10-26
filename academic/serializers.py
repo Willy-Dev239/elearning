@@ -2,9 +2,12 @@ from rest_framework import serializers
 
 from accounts.models import User
 
-from .models import AcademicYear, Course, Enrollment, Grade, TimetableSlot
+from .models import AcademicYear, Course, Enrollment, Grade, SchoolClass, TimetableSlot
 
-
+class SchoolClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SchoolClass
+        fields = ("id", "name", "academic_year")
 class AcademicYearSerializer(serializers.ModelSerializer):
     class Meta:
         model = AcademicYear
